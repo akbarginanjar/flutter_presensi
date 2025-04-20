@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:presensi/models/user_model.dart';
 import 'package:presensi/views/home/home_screen.dart';
+import 'package:presensi/views/main_screen/screen.dart';
 
 class AuthController extends GetConnect {
   Future<User> login({required String email, required String password}) async {
@@ -32,7 +33,7 @@ class AuthController extends GetConnect {
         GetStorage().write('email', conn.body['data']['email']);
         GetStorage().write('type', conn.body['data']['type']);
         Get.offAll(
-          const HomeScreen(),
+          const MainScreen(),
           transition: Transition.rightToLeft,
         );
       } else {

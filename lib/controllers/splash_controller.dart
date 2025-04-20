@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:presensi/views/home/home_screen.dart';
 import 'package:presensi/views/login/login_screen.dart';
+import 'package:presensi/views/main_screen/screen.dart';
 
 class SplashController extends GetxController {
   bool servicestatus = false;
@@ -27,7 +28,7 @@ class SplashController extends GetxController {
     return Timer(duration, () async {
       Get.offAll(
         GetStorage().read('token') != null
-            ? const HomeScreen()
+            ? const MainScreen()
             : const LoginScreen(),
       );
     });

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:presensi/views/home/home_screen.dart';
+import 'package:presensi/views/main_screen/screen.dart';
 
 class HomeService extends GetConnect {
   Future<Response> absen(
@@ -13,7 +13,7 @@ class HomeService extends GetConnect {
       "longitude": longitude,
     });
 
-    // EasyLoading.show(status: 'loading...');
+    EasyLoading.show(status: 'loading...');
 
     final Response conn = await post(
       // 'http://10.0.2.2:8000/api-act-absensi',
@@ -29,8 +29,7 @@ class HomeService extends GetConnect {
     if (conn.statusCode == 200) {
       EasyLoading.showSuccess('Absen Berhasil');
       Get.offAll(
-        const HomeScreen(),
-        transition: Transition.rightToLeft,
+        const MainScreen(),
       );
     } else {
       EasyLoading.dismiss();
@@ -41,6 +40,62 @@ class HomeService extends GetConnect {
           backgroundColor: Colors.white,
           surfaceTintColor: Colors.white,
           title: const Text('Absen Gagal!'),
+          content: Text('${conn.body['message']}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: Text(
+                'Oke',
+                style: TextStyle(color: Colors.blue[900]),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return const Response();
+  }
+
+  Future<Response> absenKeluar(
+      {required String latitude,
+      required String longitude,
+      required String clockOut}) async {
+    var body = FormData({
+      "clock_out": clockOut,
+      "latitude": latitude,
+      "longitude": longitude,
+    });
+
+    // EasyLoading.show(status: 'loading...');
+
+    final Response conn = await post(
+      // 'http://10.0.2.2:8000/api-act-absen-keluar',
+      'http://localhost:8000/api-act-absen-keluar',
+      body,
+      headers: {
+        'Accept': 'application/json',
+        // 'Authorization': 'Bearer ${GetStorage().read('token')}',
+        // 'Content-Type': 'application/json',
+      },
+    );
+    // print(conn.body);
+    if (conn.statusCode == 200) {
+      EasyLoading.showSuccess('Absen Keluar Berhasil');
+      Get.offAll(
+        const MainScreen(),
+      );
+    } else {
+      EasyLoading.dismiss();
+      Get.dialog(
+        barrierDismissible: false,
+        barrierColor: Colors.black.withOpacity(0.2),
+        AlertDialog(
+          backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
+          title: const Text('Absen Keluar Gagal!'),
           content: Text('${conn.body['message']}'),
           actions: [
             TextButton(

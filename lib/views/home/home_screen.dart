@@ -109,48 +109,15 @@ class HomeScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.grey[300]!),
               ),
               onPressed: () {
-                Get.dialog(
-                  barrierDismissible: false,
-                  barrierColor: Colors.black.withOpacity(0.2),
-                  AlertDialog(
-                    backgroundColor: Colors.white,
-                    surfaceTintColor: Colors.white,
-                    title: const Text('Logout?'),
-                    content: const Text('Apakah anda mau keluar?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: const Text(
-                          'Batal',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          GetStorage().remove('token');
-                          GetStorage().remove('id_user');
-                          GetStorage().remove('name');
-                          GetStorage().remove('email');
-                          GetStorage().remove('type');
-                          Get.offAll(
-                            const LoginScreen(),
-                            transition: Transition.rightToLeftWithFade,
-                          );
-                        },
-                        child: Text(
-                          'Ya, logout',
-                          style: TextStyle(color: Colors.blue[900]),
-                        ),
-                      ),
-                    ],
-                  ),
+                HomeService().absenKeluar(
+                  latitude: controller.latitude.toString(),
+                  longitude: controller.longitude.toString(),
+                  clockOut: DateTime.now().toString(),
                 );
               },
-              child: const Text(
-                'Logout',
-                style: TextStyle(color: Colors.black, fontSize: 17),
+              child: Text(
+                'Absen Keluar',
+                style: TextStyle(color: Colors.blue[900], fontSize: 17),
               ),
             ),
           ),
